@@ -41,5 +41,3 @@ jQuery('img').wrap('<div class="imgWrapper" />');
 	}
 
 })();
-*/
-
