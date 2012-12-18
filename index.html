@@ -1,10 +1,10 @@
-To use this bookmarklet, simply 
+To use this bookmarklet, simply drag one of the following to your bookmark bar:
 
-December 18, 2012 version: 
-<a href="javascript:(function(){var s = document.createElement('script');s.src = 'https://gist.github.com/raw/4331769/0ef0fa78ca1038d1f4e1a36e76ade40afced2171/bookmarklet.js';document.body.appendChild(s);})();">RuleOfThirds</a>
-
-Always latest version: 
+<li>HEAD (Always latest version: 
 <a href="javascript:(function(){var s = document.createElement('script');s.src = 'https://gist.github.com/raw/4331769/bookmarklet.js';document.body.appendChild(s);})();">RuleOfThirds</a>
 
-Screenshot:
-<img src="http://dl-web.dropbox.com/u/29440342/screenshots/NOXFGO-2012.12.18-16.32.png" width="600px"/>
+<li>December 18, 2012 release: 
+<a href="javascript:(function(){var s = document.createElement('script');s.src = 'https://gist.github.com/raw/4331769/0ef0fa78ca1038d1f4e1a36e76ade40afced2171/bookmarklet.js';document.body.appendChild(s);})();">RuleOfThirds</a>
+
+The former will be kept up to date (new features, etc) while using the snapshot version is more stable (it won't stop working if I push a bad commit) and more secure (say if my github account gets compromised and malicious JS is pushed, it will not be injected into websites by bookmarklet on). 
+(You'll always know what JS code you're injecting onto a given page).
