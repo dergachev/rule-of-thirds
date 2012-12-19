@@ -36,7 +36,7 @@ div.imgWrapper.enabled:before { \
   content: " ";\
 }\
 div.imgWrapper.enabled>img { \
-img.desaturate { filter: grayscale(100%); }\
+  filter: grayscale(100%);\
 }\
 </style>');
 jQuery('img').wrap('<div class="imgWrapper" />');
