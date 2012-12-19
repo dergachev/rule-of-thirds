@@ -6,14 +6,15 @@ To **get the bookmarklet**, visit http://bl.ocks.org/4331769
 
 ## Bookmarklet Development Notes
 
-Do the following to be able to use the "RuleOfThirds-localhost9090" development
+Do the following to be able to use the "RuleOfThirds-localhost" development
 version of the bookmarklet:
 
 ```bash
+# checkout the gist
 git clone https://gist.github.com/4331769.git ~/code/rule-of-thirds
+# start a mini webserver, to enable http://localhost:9090/rule-of-thirds.bookmarklet.js
 cd ~/code/rule-of-thirds
-# start a mini webserver on localhost:9090
-python -m SimpleHTTPServer 9090
+python -m SimpleHTTPServer 9090 
 ```
 
 When you're done, kill the server via `CTRL-C`.
