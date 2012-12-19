@@ -1,6 +1,7 @@
 (function(){
 	// check prior inclusion and version
-	if (window.jQuery === undefined || window.jQuery.fn.jquery < "1.3.2") {
+	var v = "1.3.2";
+	if (window.jQuery === undefined || window.jQuery.fn.jquery < v) {
 		var done = false;
 		var script = document.createElement("script");
 		script.src = "http://ajax.googleapis.com/ajax/libs/jquery/" + v + "/jquery.min.js";
