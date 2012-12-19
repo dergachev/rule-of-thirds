@@ -36,7 +36,11 @@ div.imgWrapper.enabled:before { \
   content: " ";\
 }\
 div.imgWrapper.enabled>img { \
-  filter: grayscale(100%);\
+-webkit-filter: grayscale(100%);\
+-moz-filter: grayscale(100%);\
+-ms-filter: grayscale(100%);\
+-o-filter: grayscale(100%);\
+filter: grayscale(100%);\
 }\
 </style>');
 jQuery('img').each(function(){
