@@ -40,7 +40,8 @@ div.imgWrapper.enabled>img { \
 }\
 </style>');
 jQuery('img').wrap('<div class="imgWrapper" />');
+jQuery('.imgWrapper').toggleClass('enabled');
+
 		})();
 	}
-
 })();
