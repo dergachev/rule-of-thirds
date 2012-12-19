@@ -41,11 +41,12 @@ div.imgWrapper.enabled>img { \
 </style>');
 jQuery('img').each(function(){
   var el = jQuery(this);
-  if(!el.parent('.imgWrapper')) {
+  if(el.parent('.imgWrapper').length==0) {
   	el.wrap('<div class="imgWrapper" />');
   }
-  jQuery('.imgWrapper').toggleClass('enabled');
 });
+jQuery('div.imgWrapper').toggleClass('enabled');
+
 		})();
 	}
 })();
