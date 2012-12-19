@@ -19,11 +19,11 @@
 		(window.myBookmarklet = function() {
 //javascript doesn't support newlines in literal strings without backslashes :(
 jQuery('head').append('<style type="text/css">\
-div.imgWrapper {\
+div.imgWrapper.enabled {\
   position: relative;\
   display: inline-block;\
 }\
-div.imgWrapper:before { \
+div.imgWrapper.enabled:before { \
   background:url("http://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Photo_3x3.svg/500px-Photo_3x3.svg.png");\
   background-size: 100% 100%;\
   background-repeat:no-repeat;\
@@ -34,6 +34,9 @@ div.imgWrapper:before { \
   left:0;\
   position: absolute;\
   content: " ";\
+}\
+div.imgWrapper.enabled>img { \
+img.desaturate { filter: grayscale(100%); }\
 }\
 </style>');
 jQuery('img').wrap('<div class="imgWrapper" />');
