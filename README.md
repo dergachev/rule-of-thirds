@@ -11,3 +11,4 @@ Dev Resources:
 * https://developer.mozilla.org/en-US/docs/CSS/background-size
 * http://www.w3schools.com/cssref/css3_pr_background-size.asp
 * http://stackoverflow.com/a/5123612/9621
+* http://coding.smashingmagazine.com/2010/05/23/make-your-own-bookmarklets-with-jquery/
