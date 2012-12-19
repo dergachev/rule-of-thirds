@@ -24,7 +24,7 @@ div.imgWrapper.enabled {\
   display: inline-block;\
 }\
 div.imgWrapper.enabled:before { \
-  background:url("http://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Photo_3x3.svg/500px-Photo_3x3.svg.png");\
+  background:url("https://gist.github.com/raw/4331769/rule-of-thirds.png");\
   background-size: 100% 100%;\
   background-repeat:no-repeat;\
   width:100%;\
