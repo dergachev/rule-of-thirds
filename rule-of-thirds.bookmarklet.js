@@ -39,9 +39,13 @@ div.imgWrapper.enabled>img { \
   filter: grayscale(100%);\
 }\
 </style>');
-jQuery('img').wrap('<div class="imgWrapper" />');
-jQuery('.imgWrapper').toggleClass('enabled');
-
+jQuery('img').each(function(){
+  var el = jQuery(this);
+  if(!el.parent('.imgWrapper')) {
+  	el.wrap('<div class="imgWrapper" />');
+  }
+  jQuery('.imgWrapper').toggleClass('enabled');
+});
 		})();
 	}
 })();
