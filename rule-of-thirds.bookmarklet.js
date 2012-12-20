@@ -1,6 +1,6 @@
 (function(){
 	// check prior inclusion and version
-	var v = "1.3.2";
+	var v = "1.4";
 	if (window.jQuery === undefined || window.jQuery.fn.jquery < v) {
 		var done = false;
 		var script = document.createElement("script");
@@ -16,43 +16,49 @@
 		initMyBookmarklet();
 	}
 	
-	function initMyBookmarklet() {
-		(window.myBookmarklet = function() {
-//javascript doesn't support newlines in literal strings without backslashes :(
-jQuery('head').append('<style type="text/css">\
-div.imgWrapper.enabled {\
-  position: relative;\
-  display: inline-block;\
-}\
-div.imgWrapper.enabled:before { \
-  background:url("https://gist.github.com/raw/4331769/rule-of-thirds.png");\
-  background-size: 100% 100%;\
-  background-repeat:no-repeat;\
-  width:100%;\
-  height: 100%;\
-  z-index: 1;\
-  top:0;\
-  left:0;\
-  position: absolute;\
-  content: " ";\
-}\
-div.imgWrapper.enabled>img { \
-filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */\
--webkit-filter: grayscale(100%);\
--moz-filter: grayscale(100%);\
--ms-filter: grayscale(100%);\
--o-filter: grayscale(100%);\
-filter: grayscale(100%);\
-}\
-</style>');
-jQuery('img').each(function(){
-  var el = jQuery(this);
-  if(el.parent('.imgWrapper').length==0) {
-  	el.wrap('<div class="imgWrapper" />');
-  }
-});
-jQuery('div.imgWrapper').toggleClass('enabled');
-
-		})();
-	}
 })();
+function initMyBookmarklet() {
+  (window.myBookmarklet = function() {
+
+    var $ = jQuery;
+    if ($('.imgBefore').remove().length) {
+      console.log("RETURNING");
+      // means we're running a second time, so turning off
+      return;
+    } 
+
+    //jQuery('img[src="http://media-cache-ec4.pinterest.com/upload/552113235537700745_J0r1RRQP_c.jpg"]').each(function(){ 
+    jQuery('img').each(function(){ 
+      //console.log(this);
+      var el = jQuery(this);
+      if (!el.is(':visible') || el.width() < 100 || el.height() < 100) {
+        //skip small or invisible images
+        return;
+      } 
+      // console.log([el.width(), el.height(),el.offset(), el.css('z-index')]);
+
+
+      var overlay = jQuery('<div class="imgBefore" />')
+      .height(el.height())
+      .width(el.width())
+      .offset(el.offset())
+      .css('z-index', 100)
+      // .css('z-index', el.css('z-index'))
+      .appendTo('body');
+    });
+
+    //javascript doesn't support newlines in literal strings without backslashes :(
+    jQuery('head').append('<style type="text/css">\
+        .imgBefore {\
+          //background:url("http://localhost:9090/rule-of-thirds.svg");\
+          background:url("https://gist.github.com/raw/4331769/d61a2c473189e09731bda7a2d4ff3620bc99eece/rule-of-thirds.svg");\
+      background-size: 100% 100%;\
+      z-index:100;\
+      pointer-events: none;\
+      position: absolute;\
+        }\
+        </style>');
+
+
+  })();
+  }
