@@ -1,3 +1,60 @@
+function createOverlay(width,height){
+  var canvas = jQuery('<canvas />')
+    .attr({ 
+      'width':width, 
+      'height':height
+    });
+ 
+  var ctx = canvas[0].getContext('2d');
+
+  var drawLine = function(x1,y1,x2,y2) {
+    drawLineHelper(x1,y1,x2,y2,'white',8);
+    drawLineHelper(x1,y1,x2,y2,'black',4);
+  }
+
+  var drawLineHelper = function(x1,y1,x2,y2,strokeStyle,lineWidth) { 
+    ctx.beginPath();
+    ctx.strokeStyle = strokeStyle;
+    ctx.lineWidth = lineWidth;
+    ctx.moveTo(x1,y1);
+    ctx.lineTo(x2,y2);
+    ctx.stroke();
+  }
+
+  // horizontal lines
+  drawLine(0,height/3, width,height/3);
+  drawLine(0,2*height/3, width,2*height/3);
+
+  // vertical lines
+  drawLine(width/3,0, width/3,height);
+  drawLine(2*width/3,0, 2*width/3,height);
+
+  return canvas;
+}
+
+function initMyBookmarklet() {
+  (window.myBookmarklet = function() {
+    var $ = jQuery;
+    if ($('.imgBefore').remove().length) {
+      return;
+    } 
+    jQuery('img').each(function(){ 
+      //console.log(this);
+      var el = jQuery(this);
+      if (!el.is(':visible') || el.width() < 100 || el.height() < 100) {
+        //skip small or invisible images
+        return;
+      } 
+      createOverlay(el.width(),el.height())
+        .css( { 
+          'position':'absolute',
+          'z-index':'1000', //TODO: make this dynamic via maxZIndex implementation
+          'pointer-events':'none'})
+        .offset(el.offset())
+        .prependTo('body');
+    });
+  })();
+}
 (function(){
 	// check prior inclusion and version
 	var v = "1.4";
@@ -17,48 +74,3 @@
 	}
 	
 })();
-function initMyBookmarklet() {
-  (window.myBookmarklet = function() {
-
-    var $ = jQuery;
-    if ($('.imgBefore').remove().length) {
-      console.log("RETURNING");
-      // means we're running a second time, so turning off
-      return;
-    } 
-
-    //jQuery('img[src="http://media-cache-ec4.pinterest.com/upload/552113235537700745_J0r1RRQP_c.jpg"]').each(function(){ 
-    jQuery('img').each(function(){ 
-      //console.log(this);
-      var el = jQuery(this);
-      if (!el.is(':visible') || el.width() < 100 || el.height() < 100) {
-        //skip small or invisible images
-        return;
-      } 
-      // console.log([el.width(), el.height(),el.offset(), el.css('z-index')]);
-
-
-      var overlay = jQuery('<div class="imgBefore" />')
-      .height(el.height())
-      .width(el.width())
-      .offset(el.offset())
-      .css('z-index', 100)
-      // .css('z-index', el.css('z-index'))
-      .appendTo('body');
-    });
-
-    //javascript doesn't support newlines in literal strings without backslashes :(
-    jQuery('head').append('<style type="text/css">\
-        .imgBefore {\
-          //background:url("http://localhost:9090/rule-of-thirds.svg");\
-          background:url("https://gist.github.com/raw/4331769/d61a2c473189e09731bda7a2d4ff3620bc99eece/rule-of-thirds.svg");\
-      background-size: 100% 100%;\
-      z-index:100;\
-      pointer-events: none;\
-      position: absolute;\
-        }\
-        </style>');
-
-
-  })();
-  }
