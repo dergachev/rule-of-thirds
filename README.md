@@ -52,8 +52,25 @@ Canvas:
 * http://diveintohtml5.info/canvas.html
 * http://stackoverflow.com/questions/10433046/creating-a-canvas-element-and-setting-its-width-and-height-attributes
 
+jQuery position:
+
+* http://stackoverflow.com/questions/158070/jquery-how-to-position-one-element-relative-to-another/2781557#2781557
+* http://api.jquery.com/position/ (the core jquery position() method)
+* http://wiki.jqueryui.com/w/page/12138026/Position (jqery UI position(attr) method)
+* http://jqueryui.com/position/
+* http://view.jqueryui.com/master/ui/jquery.ui.position.js (source code)
+
 Require-JS:
 
 * http://www.requirejs.org/jqueryui-amd/example/webapp/app.html
 * http://stackoverflow.com/questions/12113172/how-do-i-use-jquery-ui-with-requirejs
 * http://requirejs.org/docs/api.html#config-shim
+* https://github.com/jrburke/requirejs/issues/509
+* http://stackoverflow.com/questions/4918084/pro-and-cons-on-using-requirejs-over-labjs-or-viceversa
+* http://msdn.microsoft.com/en-us/magazine/ff943568.aspx
+
+YepNope-JS:
+
+* http://yepnopejs.com/#api
+* http://stackoverflow.com/questions/3782649/whats-the-best-way-to-utilize-jquery-ui-theme-on-cdn-with-local-fallback/5609065#5609065
+* http://news.ycombinator.com/item?id=1955074

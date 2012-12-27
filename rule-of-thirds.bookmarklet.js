@@ -54,8 +54,8 @@ function initMyBookmarklet() {
     } 
     jQuery('img').each(function(){ 
       var el = jQuery(this);
-      // if (!el.is(':visible') || el.width() < 100 || el.height() < 100) {
-      if (el.width() < 100 || el.height() < 100) {
+      //TODO: deal with invisible images gracefully
+      if (!el.is(':visible') || el.width() < 100 || el.height() < 100) {
         //skip small or invisible images
         return;
       } 
@@ -78,34 +78,11 @@ function initMyBookmarklet() {
     });
   })();
 }
-(function(){
-	// check prior inclusion and version
-	// var v = "1.4";
-	var v = "1.8";
-	if (window.jQuery === undefined || window.jQuery.fn.jquery < v) {
-		var done = false;
-		var script = document.createElement("script");
-		script.src = "http://ajax.googleapis.com/ajax/libs/jquery/" + v + "/jquery.min.js";
-		script.onload = script.onreadystatechange = function(){
-			if (!done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")) {
-				done = true;
-				initMyBookmarklet();
-			}
-		};
-		document.getElementsByTagName("head")[0].appendChild(script);
-	} else {
-		initMyBookmarklet();
-	}
-	
-// })();
-}); //define but dont run
-
 
 (function(){
 		var done = false;
 		var script = document.createElement("script");
-		//script.src = "http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js";
-		script.src = "//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.1/require.min.js";
+		script.src = "//cdnjs.cloudflare.com/ajax/libs/yepnope/1.5.4/yepnope.min.js";
 		script.onload = script.onreadystatechange = function(){
 			if (!done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")) {
 				done = true;
@@ -115,32 +92,20 @@ function initMyBookmarklet() {
 		document.getElementsByTagName("head")[0].appendChild(script);
 })();
 
-
-function depsDone($) {
-  initMyBookmarklet();
-}
 function requireDeps() {
-  require.config({
-    baseUrl: "//cdnjs.cloudflare.com/ajax/libs",
-    paths: { //remember that requirejs appends .js to all paths!
-        "jquery": "jquery/1.8.3/jquery.min"
-      , "jquery-ui": "jqueryui/1.9.2/jquery-ui.min"
-      // performance enhancement: load only jquery-ui-position, ideally from a CDN or via gist
-      // , "jquery-ui-position": "http://view.jqueryui.com/master/ui/jquery.ui.position"
-    },
-    shim: {
-        "jquery-ui": {
-             exports: "$"
-           , deps: ['jquery']
-         }
-      // , "jquery-ui-position": {
-      //        exports: "$"
-      //      , deps: ['jquery']
-      //    }
+  yepnope([{
+    test: typeof(jQuery) === "undefined" || jQuery.fn.jquery.match(/^1\.[0-9]+/) <= 1.4,
+    yep: '//cdnjs.cloudflare.com/ajax/libs/jquery/1.4.4/jquery.min.js',
+  }, {
+    // check for jQuery.ui.position
+    test: typeof(jQuery) === "undefined" || typeof(jQuery.ui) === "undefined",
+    yep: 'http://view.jqueryui.com/master/ui/jquery.ui.position.js',
+    complete: function (url, result, key) {
+      initMyBookmarklet();
+      // makes our jQuery version not clobber pre-existing one (eg for pinterest)
+      // jQuery.noConflict(true); // doesn't seem to work properly
     }
-  });
-  require(['jquery-ui'], function($){ 
-    depsDone($);
-  });
+  }
+  ]);
 }
 
