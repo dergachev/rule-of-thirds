@@ -51,3 +51,9 @@ Canvas:
 * http://billmill.org/static/canvastutorial/color.html
 * http://diveintohtml5.info/canvas.html
 * http://stackoverflow.com/questions/10433046/creating-a-canvas-element-and-setting-its-width-and-height-attributes
+
+Require-JS:
+
+* http://www.requirejs.org/jqueryui-amd/example/webapp/app.html
+* http://stackoverflow.com/questions/12113172/how-do-i-use-jquery-ui-with-requirejs
+* http://requirejs.org/docs/api.html#config-shim
