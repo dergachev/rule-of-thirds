@@ -7,12 +7,11 @@ function createOverlay(width,height){
  
   var ctx = canvas[0].getContext('2d');
 
-  var drawLine = function(x1,y1,x2,y2) {
-    drawLineHelper(x1,y1,x2,y2,'white',8);
-    drawLineHelper(x1,y1,x2,y2,'black',4);
-  }
-
-  var drawLineHelper = function(x1,y1,x2,y2,strokeStyle,lineWidth) { 
+  var drawLine = function(line,strokeStyle,lineWidth) {
+    var x1 = line[0],
+        y1 = line[1],
+        x2 = line[2],
+        y2 = line[3];
     ctx.beginPath();
     ctx.strokeStyle = strokeStyle;
     ctx.lineWidth = lineWidth;
@@ -21,13 +20,28 @@ function createOverlay(width,height){
     ctx.stroke();
   }
 
-  // horizontal lines
-  drawLine(0,height/3, width,height/3);
-  drawLine(0,2*height/3, width,2*height/3);
+  function drawLines(lines,color,size) {
+    lines.forEach(function(line) {
+      drawLine(line,color,size);
+    });
+  }
 
-  // vertical lines
-  drawLine(width/3,0, width/3,height);
-  drawLine(2*width/3,0, 2*width/3,height);
+  /*   |  |
+     --+--+-- h1
+       |  |
+     --+--+-- h2
+       |  |    
+      v1  v2   */
+
+  var h1 = [0, height/3, width, height/3],
+      h2 = [0, 2*height/3, width, 2*height/3],
+      v1 = [width/3, 0, width/3, height],
+      v2 = [2*width/3, 0, 2*width/3, height];
+
+  var lines = [h1,h2,v1,v2];
+
+  drawLines(lines,'white',4);
+  drawLines(lines,'black',2);
 
   return canvas;
 }
@@ -35,7 +49,7 @@ function createOverlay(width,height){
 function initMyBookmarklet() {
   (window.myBookmarklet = function() {
     var $ = jQuery;
-    if ($('.imgBefore').remove().length) {
+    if ($('canvas.rule-of-thirds').remove().length) {
       return;
     } 
     jQuery('img').each(function(){ 
@@ -51,6 +65,7 @@ function initMyBookmarklet() {
           'z-index':'1000', //TODO: make this dynamic via maxZIndex implementation
           'pointer-events':'none'})
         .offset(el.offset())
+        .addClass('rule-of-thirds')
         .prependTo('body');
     });
   })();
