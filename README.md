@@ -19,6 +19,16 @@ python -m SimpleHTTPServer 9090
 
 When you're done, kill the server via `CTRL-C`.
 
+## TODO
+
+* Figure out how to collect usage statistics 
+ - analytics on script tag referrer data? make sure no effect on performance
+* Create a feedback mechanism (eg feedback tab for bug reporting)
+* Ensure rule-of-thirds.bookmarklet.js doesnt get re-injected needlessly 
+ - see http://stackoverflow.com/questions/7373993/how-to-enforce-a-bookmarklet-to-run-only-once
+* Start using jsfiddle for examples/test cases
+ - eg http://jsfiddle.net/wE2BN/
+
 ## Dev Links
 
 CSS:
@@ -27,6 +37,7 @@ CSS:
 * https://developer.mozilla.org/en-US/docs/CSS/background-size
 * http://www.w3schools.com/cssref/css3_pr_background-size.asp
 * http://stackoverflow.com/questions/5123489/how-to-overlay-a-play-button-over-a-youtube-thumbnail-image/5123612#5123612
+* http://jsfiddle.net/gbU3H/1/ (another bookmarklet that tries to do rule-of-thirds overlay)
 
 SVG:
 
@@ -59,6 +70,7 @@ jQuery position:
 * http://wiki.jqueryui.com/w/page/12138026/Position (jqery UI position(attr) method)
 * http://jqueryui.com/position/
 * http://view.jqueryui.com/master/ui/jquery.ui.position.js (source code)
+* http://css-tricks.com/jquery-ui-position-function/
 
 Require-JS:
 
@@ -74,3 +86,11 @@ YepNope-JS:
 * http://yepnopejs.com/#api
 * http://stackoverflow.com/questions/3782649/whats-the-best-way-to-utilize-jquery-ui-theme-on-cdn-with-local-fallback/5609065#5609065
 * http://news.ycombinator.com/item?id=1955074
+
+Pages to Test:
+
+* http://www.flickr.com/photos/wallacesilva/6230440322/
+* http://500px.com/photo/2177596
+* http://en.wikipedia.org/wiki/File:Vermeer-view-of-delft.jpg
+* http://pinterest.com/dergachev/beyond-rule-of-thirds-lecture/
+* http://evolvingweb.ca/
