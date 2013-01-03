@@ -7,6 +7,7 @@ function initMyBookmarklet() {
       return;
     }
     jQuery('img').each(function(){
+      window.el = jQuery(this);
       var el = jQuery(this),
           w = el.width(),
           h = el.height(),
@@ -18,7 +19,7 @@ function initMyBookmarklet() {
         return;
       }
 
-      var overlay = jQuery('<div />')
+      window.overlay = jQuery('<div />')
         .addClass('rule-of-thirds')
         .css( {
            'position': 'absolute',
@@ -49,8 +50,14 @@ function initMyBookmarklet() {
           'left': '0px',
         });
       } else {
-        overlay.insertAfter(el)
-          .position({"of": el, at: "center"});
+        overlay.insertAfter(el);
+        //XXX: why does overlay.position need to be run twice on http://bl.ocks.org/4331769
+        // console.log("img offset", el.position());
+        // console.log("overlay offset", overlay.position());
+        overlay.position({"of": el, at: "center"});
+        // console.log("overlay offset", overlay.position());
+        overlay.position({"of": el, at: "center"});
+        // console.log("overlay offset", overlay.position());
       }
     });
   })();
