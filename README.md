@@ -94,3 +94,4 @@ Pages to Test:
 * http://en.wikipedia.org/wiki/File:Vermeer-view-of-delft.jpg
 * http://pinterest.com/dergachev/beyond-rule-of-thirds-lecture/
 * http://evolvingweb.ca/
+* http://bl.ocks.org/4331769
