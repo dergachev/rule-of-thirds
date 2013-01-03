@@ -159,7 +159,7 @@ function requireDeps() {
   }, {
     // check for jQuery.ui.position
     test: needJqUiPosition,
-    yep: 'http://view.jqueryui.com/master/ui/jquery.ui.position.js',
+    yep: 'https://gist.github.com/raw/4331769/dbfadedd1691b5e5fa006062682bab14390bec52/jquery.ui.position.js',
     complete: function (url, result, key) {
       initMyBookmarklet();
       // TODO: makes our jQuery version not clobber pre-existing one (eg for pinterest)
