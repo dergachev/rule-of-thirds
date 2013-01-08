@@ -17,19 +17,19 @@ RuleOfThirds.stateMachine = RuleOfThirds.stateMachine || new (function (){
     { name:'GRID_THIRDS',
       onEnter: function() {
         removeOverlays(); // unnecessary due to order of state advance()
-        createOverlays(function() { return getSVGOverlayThirdsGrid("GRID_THIRDS")} );
+        createOverlays(function(width, height) { return getSVGOverlayThirdsGrid(width, height, "GRID_THIRDS")} );
       }
     },
     { name:'GRID_PHI',
       onEnter: function() {
         removeOverlays(); // unnecessary due to order of state advance()
-        createOverlays(function() { return getSVGOverlayThirdsGrid("GRID_PHI")} );
+        createOverlays(function(width, height) { return getSVGOverlayThirdsGrid(width, height, "GRID_PHI")} );
       }
     },
     { name:'TRIANGLES',
       onEnter: function() {
         removeOverlays(); // unnecessary due to order of state advance()
-        createOverlays(function() { return getSVGOverlayThirdsGrid("TRIANGLES")} );
+        createOverlays(function(width, height) { return getSVGOverlayThirdsGrid(width, height, "TRIANGLES")} );
       }
     },
     { name:'SPIRAL',
@@ -69,6 +69,7 @@ function createOverlays(overlayFactory) {
     if (!el.is(':visible') || w < 100 || h < 100) {
       return;
     }
+  console.log(src,w,h);
 
     window.overlay = jQuery('<div />')
       .addClass('rule-of-thirds')
@@ -79,7 +80,7 @@ function createOverlays(overlayFactory) {
          'height': h,
        })
       .attr('rel',src || "" ) // "undefined" chokes .attr; http://bit.ly/134P0C9
-      .append(overlayFactory())
+      .append(overlayFactory(w,h))
       // .append(getCanvasOverlay(w,h))
 
     if (useWrapper) { // should be fairly harmless; fixes pinterest zoom
@@ -130,7 +131,6 @@ function getSVGOverlaySpiral() {
    sodipodi:version="0.32"\
    inkscape:version="0.44"\
    version="1.0"\
-   preserveAspectRatio="none"\
    viewbox="0 0 987.6 611"\
    sodipodi:docname="Fibonacci_spiral.svg">\
 <defs>\
@@ -273,7 +273,7 @@ version="1.1" viewBox="<%= viewBox %>" preserveAspectRatio="none">\
   return svg;
 }
 
-function getSVGOverlayThirdsGrid(type) {
+function getSVGOverlayThirdsGrid(width, height, type) {
 
   /*   |  |
      --+--+-- h1
@@ -283,36 +283,42 @@ function getSVGOverlayThirdsGrid(type) {
       v1  v2   */
 
 
-  var width = 300,
-      height = 300,
-      phi = 1.6180339887;
-
   switch (type) {
+    case "TRIANGLES":
+      var w = width, h = height, w_sq = Math.pow(w,2), h_sq = Math.pow(h,2);
+      var lines = {
+        d1: [0, 0, (h_sq * w)/(w_sq + h_sq), h * w_sq / (w_sq + h_sq)],
+        d2: [w - (h_sq * w)/(w_sq + h_sq), h - h * w_sq / (w_sq + h_sq), w, h],
+        d3: [0, h, w, 0],
+        // d4: [0,0,w,h]
+      };
+      break;
     case "GRID_PHI":
+      var phi = 1.6180339887;
       var v1 = width * (1-(1/phi)),
           v2 = width * (1/phi),
           h1 = height * (1-(1/phi)),
           h2 = height * (1/phi);
+      var lines = {
+        h1: [0, h1, width, h1],
+        h2: [0, h2, width, h2],
+        v1: [v1, 0, v1, height],
+        v2: [v2, 0, v2, height]
+      };
       break;
-    // case "TRIANGLES":
-    //   var v1 = width * (1-(1/phi)),
-    //       v2 = width * (1/phi),
-    //       h1 = height * (1-(1/phi)),
-    //       h2 = height * (1/phi);
-    //   break;
     case "GRID_THIRDS":
     default:
       var v1 = width * (1/3),
           v2 = width * (2/3),
           h1 = height * (1/3),
           h2 = height * (2/3);
+      var lines = {
+        h1: [0, h1, width, h1],
+        h2: [0, h2, width, h2],
+        v1: [v1, 0, v1, height],
+        v2: [v2, 0, v2, height]
+      };
   }
-  var lines = {
-    h1: [0, h1, width, h1],
-    h2: [0, h2, width, h2],
-    v1: [v1, 0, v1, height],
-    v2: [v2, 0, v2, height]
-  };
 
 
   // inspired by https://github.com/documentcloud/underscore/issues/220

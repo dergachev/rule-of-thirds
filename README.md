@@ -95,3 +95,9 @@ Pages to Test:
 * http://pinterest.com/dergachev/beyond-rule-of-thirds-lecture/
 * http://evolvingweb.ca/
 * http://bl.ocks.org/4331769
+* http://www.fabiovisentin.com/blog/45.ashx (problem as of jan 4)
+
+Photography:
+
+* http://pamphotography.wordpress.com/2011/08/06/the-golden-ratio-phi-and-photography/
+* http://photoinf.com/Golden_Mean/
