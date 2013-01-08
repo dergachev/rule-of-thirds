@@ -32,10 +32,28 @@ RuleOfThirds.stateMachine = RuleOfThirds.stateMachine || new (function (){
         createOverlays(function(width, height) { return getSVGOverlayThirdsGrid(width, height, "TRIANGLES")} );
       }
     },
-    { name:'SPIRAL',
+    { name:'SPIRAL_0',
       onEnter: function() {
         removeOverlays();
-        createOverlays(getSVGOverlaySpiral);
+        createOverlays(function(width,height,degrees) { return getSVGOverlaySpiral(width, height, "SPIRAL_0"); });
+      }
+    },
+    { name:'SPIRAL_90',
+      onEnter: function() {
+        removeOverlays();
+        createOverlays(function(width,height,degrees) { return getSVGOverlaySpiral(width, height, "SPIRAL_90"); });
+      }
+    },
+    { name:'SPIRAL_180',
+      onEnter: function() {
+        removeOverlays();
+        createOverlays(function(width,height,degrees) { return getSVGOverlaySpiral(width, height, "SPIRAL_180"); });
+      }
+    },
+    { name:'SPIRAL_270',
+      onEnter: function() {
+        removeOverlays();
+        createOverlays(function(width,height,degrees) { return getSVGOverlaySpiral(width, height, "SPIRAL_270"); });
       }
     }
   ];
@@ -117,7 +135,7 @@ function createOverlays(overlayFactory) {
 //from http://en.wikipedia.org/wiki/File:Fibonacci_spiral.svg
 // according to lightroom this is the vertical orientation.
 // for horizontal images, need to rotate 90 degrees CW
-function getSVGOverlaySpiral() {
+function getSVGOverlaySpiralTemplate() {
   var svg = '<svg\
    xmlns:dc="http://purl.org/dc/elements/1.1/"\
    xmlns:xlink="http://www.w3.org/1999/xlink"\
@@ -132,6 +150,7 @@ function getSVGOverlaySpiral() {
    inkscape:version="0.44"\
    version="1.0"\
    viewbox="0 0 987.6 611"\
+   preserveAspectRatio="none"\
    sodipodi:docname="Fibonacci_spiral.svg">\
 <defs>\
 <filter id="offsetAndBlack" x="0" y="0" width="200%" height="200%">\
@@ -139,7 +158,7 @@ function getSVGOverlaySpiral() {
   <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />\
   <feBlend in="SourceGraphic" in2="matrixOut" mode="normal" />\
 </filter>\
-<g id="spiral">\
+<g id="spiral" >\
   <path id="path1873" sodipodi:type="arc"\
      vector-effect="non-scaling-stroke"\
      sodipodi:cx="337.94031" sodipodi:cy="2354.0146" sodipodi:rx="301.58487" sodipodi:ry="281.75464"\
@@ -198,55 +217,55 @@ function getSVGOverlaySpiral() {
   <path d="M 610.30252,610.49292 L 610.30252,0.50000006" id="rect2806" sodipodi:nodetypes="cc" vector-effect="non-scaling-stroke" />\
 </g>\
 </defs>\
-<use xlink:href="#spiral" style="fill:none; stroke: grey; stroke-width: 4;" />\
-<use xlink:href="#spiral" style="fill:none; stroke: white; stroke-width: 2;" />\
+<g id="drawing" transform="<%= transform %>">\
 <use xlink:href="#rectangles" style="vector-effect:none; stroke: grey; stroke-width: 4;"/>\
 <use xlink:href="#rectangles" style="vector-effect:none; stroke: white; stroke-width: 2;"/>\
+<use xlink:href="#spiral" style="fill:none; stroke: grey; stroke-width: 4;" />\
+<use xlink:href="#spiral" style="fill:none; stroke: white; stroke-width: 2;" />\
+</g>\
 </svg>';
-  /*
+  return svg;
+}
 
-  // Removed inner spirals
-  <path d="M 712.3099,445.48994 L 712.3099,432.52678" id="rect2784" sodipodi:nodetypes="cc" />\
-  <path d="M 720.30713,445.48994 L 699.38339,445.48994" id="rect2786" sodipodi:nodetypes="cc" />\
-  <path d="M 712.30972,440.52336 L 720.23381,440.52336" id="rect2788" sodipodi:nodetypes="cc" />\
-  <path d="M 715.2674,440.52336 L 715.2674,445.48954" id="rect2790" sodipodi:nodetypes="cc" />\
-  <path d="M 715.2674,442.49549 L 712.30948,442.49549" id="rect2792" sodipodi:nodetypes="cc" />\
-  <path d="M 720.30713,432.52653 L 720.30713,466.52284" id="rect2794" sodipodi:nodetypes="cc" />\
-  <path d="M 699.38363,432.52653 L 754.2489,432.52653" id="rect2796" sodipodi:nodetypes="cc" />\
-  <path d="M 699.38363,466.52217 L 699.38363,377.48576" id="rect2798" sodipodi:nodetypes="cc" />\
+function getSVGOverlaySpiral(width, height, type) {
+  console.log("Spiraling", type);
 
-  // Removed inner lines
-  <path id="path2774" sodipodi:type="arc"\
-     style=""\
-     sodipodi:cx="337.94031" sodipodi:cy="2354.0146" sodipodi:rx="301.58487" sodipodi:ry="281.75464"\
-     d="M 36.355438,2354.0146 A 301.58487,281.75464 0 0 1 337.94031,2072.26"\
-     sodipodi:start="3.1415927" sodipodi:end="4.712389" sodipodi:open="true"\
-     transform="matrix(4.134032e-2,0,0,4.425038e-2,698.8904,341.5598)" />\
-  <path id="path2776" sodipodi:type="arc"\
-     transform="matrix(-2.269401e-2,0,0,2.429152e-2,720.4049,382.9198)"\
-     sodipodi:open="true" sodipodi:end="4.712389" sodipodi:start="3.1415927"\
-     d="M 36.355438,2354.0146 A 301.58487,281.75464 0 0 1 337.94031,2072.26"\
-     sodipodi:ry="281.75464" sodipodi:rx="301.58487" sodipodi:cy="2354.0146" sodipodi:cx="337.94031"\
-     style="" />\
-  <path sodipodi:type="arc" id="path2778"\
-     style=""\
-     sodipodi:cx="337.94031" sodipodi:cy="2354.0146" sodipodi:rx="301.58487" sodipodi:ry="281.75464"\
-     d="M 36.355438,2354.0146 A 301.58487,281.75464 0 0 1 337.94031,2072.26"\
-     sodipodi:start="3.1415927" sodipodi:end="4.712389" sodipodi:open="true"\
-     transform="matrix(0,-1.567144e-2,-1.677462e-2,0,754.3412,445.2738)" />\
-  <path id="path2780" sodipodi:type="arc"\
-     transform="matrix(6.469458e-3,0,0,-6.924892e-3,712.7925,459.0548)"\
-     sodipodi:open="true" sodipodi:end="4.712389" sodipodi:start="3.1415927"\
-     d="M 36.355438,2354.0146 A 301.58487,281.75464 0 0 1 337.94031,2072.26"\
-     sodipodi:ry="281.75464" sodipodi:rx="301.58487" sodipodi:cy="2354.0146" sodipodi:cx="337.94031"\
-     style="" />\
-  <path id="path2782" sodipodi:type="arc"\
-     style=""\
-     sodipodi:cx="337.94031" sodipodi:cy="2354.0146" sodipodi:rx="301.58487" sodipodi:ry="281.75464"\
-     d="M 36.355438,2354.0146 A 301.58487,281.75464 0 0 1 337.94031,2072.26"\
-     sodipodi:start="3.1415927" sodipodi:end="4.712389" sodipodi:open="true"\
-     transform="matrix(0,5.077039e-3,7.378482e-3,0,697.7376,441.2188)" />\
-     */
+  //corresponds to values hardcoded in SVG template
+  var viewboxWidth = 987.6,
+      viewboxHeight = 611,
+      halfViewboxWidth = viewboxWidth / 2,
+      halfViewboxHeight = viewboxHeight / 2;
+
+      // var transform = 'rotate(180 494 306)';
+      // var transform = 'scale(-1,-1) translate(' + viewboxWidth +',' + viewboxHeight +')';
+      // var transform = 'scale(-1,1) translate(' + (halfViewboxWidth + 1000) +',0)';
+
+  // from http://tech.groups.yahoo.com/group/svg-developers/message/14903
+  var transform = '';
+  switch (type) {
+    case "SPIRAL_90":
+      var transform = 'matrix(-1,0,0,1,' + viewboxWidth +',0)'; //horizontal flip
+      break;
+    case "SPIRAL_180":
+      var transform = 'matrix(-1,0,0,-1,' + viewboxWidth +',' + viewboxHeight + ')'; // vertical + horizontal flip
+      break;
+    case "SPIRAL_270":
+      var transform = '';
+      var transform = 'matrix(1,0,0,-1,0,' + viewboxHeight + ')'; //horizontal flip
+      break;
+    case "SPIRAL_0":
+    default:
+      var transform = '';
+  }
+
+  var svg = _.template(getSVGOverlaySpiralTemplate(), {
+    transform: transform
+  });
+
+  // svg = jQuery(svg).css({
+  //   width: width,
+  //   height: height
+  // });
   return svg;
 }
 
@@ -259,8 +278,8 @@ function getSVGOverlayThirdsGridTemplate() {
   var svg = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="<%= viewBox %>" preserveAspectRatio="none">\
 <% _.each(lines, function(line) { %>\
-<polyline points="<%= line %>" style="stroke: grey; stroke-width:4;" />\
-<polyline points="<%= line %>" style="stroke: white; stroke-width:2;" />\
+<polyline points="<%= line %>" style="stroke: grey; stroke-width:4;" vector-effect="non-scaling-stroke" />\
+<polyline points="<%= line %>" style="stroke: white; stroke-width:2;" vector-effect="non-scaling-stroke" />\
 <% }); %>\
 </svg>';
   return svg;
