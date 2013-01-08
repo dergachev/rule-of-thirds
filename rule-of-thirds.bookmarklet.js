@@ -257,18 +257,11 @@ function getSVGOverlayThirdsGridTemplate() {
   // including the <?xml tag causes errors, so we remove it
   // var svg = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\
   var svg = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\
-<svg \
-xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"\
-version="1.1" viewBox="<%= viewBox %>" preserveAspectRatio="none">\
-<defs>\
-<g id="lines">\
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="<%= viewBox %>" preserveAspectRatio="none">\
 <% _.each(lines, function(line) { %>\
-<polyline vector-effect="non-scaling-stroke" points="<%= line %>" />\
+<polyline points="<%= line %>" style="stroke: grey; stroke-width:4;" />\
+<polyline points="<%= line %>" style="stroke: white; stroke-width:2;" />\
 <% }); %>\
-</g>\
-</defs>\
-<use xlink:href="#lines" style="stroke: grey; stroke-width: 4;"/>\
-<use xlink:href="#lines" style="stroke: white; stroke-width: 2;"/>\
 </svg>';
   return svg;
 }
@@ -333,7 +326,7 @@ function getSVGOverlayThirdsGrid(width, height, type) {
     // v1: "100,0 100,300",
     // v2: "200,0 200,300"
     viewBox: [0,0,width,height].join(" "),
-    lines: objectMapPreserveKeys(lines, function(v) { return v.join(", ")})
+    lines: _.map(lines, function(v) { return v[0] + "," + v[1] + " " + v[2] + "," + v[3]; })
   });
 
   return jQuery(svg);
