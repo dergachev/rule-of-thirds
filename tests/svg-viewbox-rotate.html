@@ -1,0 +1,54 @@
+<h1> SVG viewbox rotation </h1>
+
+This demonstrates what it takes to achieve rotating the svg. Note that the red lines are originally horizontal.
+Pay attention to the following:
+
+<li> rotate(90,CX,CY)
+<li> translate(CY-CX, CX-CY) 
+<li> there's width on the wrapper, which is post-rotation stretched via viewbox="0,0,H,W", preserveAspectRatio=none
+<li> viewbox="0,0,H,W" instead of "0,0,W,H"
+
+<h2> Resources </h2>
+
+<li> http://en.wikipedia.org/wiki/Matrix_multiplication
+<li> http://www.w3.org/TR/SVGTiny12/coords.html#NestedTransformations
+<li> http://commons.oreilly.com/wiki/index.php/SVG_Essentials/Transforming_the_Coordinate_System
+<li> http://webdesign.about.com/od/svg/a/svg-viewbox-attribute.htm
+
+
+<div id="wrapper">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+viewboxOriginal="0,0,300,600" 
+viewbox="0,0,300,600" 
+preserveAspectRatio="none"
+version="1.1">
+  <defs>
+    <g id="horizontal-lines">
+      <polyline vector-effect="non-scaling-stroke" points="0,100 600,100" />
+      <polyline vector-effect="non-scaling-stroke" points="0,200 600,200" />
+    </g>
+    <g id="vertical-lines">
+    <polyline vector-effect="non-scaling-stroke" points="200,0 200,300" />
+    <polyline vector-effect="non-scaling-stroke" points="400,0 400,300" />
+    </g>
+  </defs>
+  <g transform="translate(-150,150)">
+    <g transform="rotate(90,300,150)">
+      <use xlink:href="#horizontal-lines" style="stroke: red; stroke-width: 2"/>
+      <use xlink:href="#vertical-lines" style="stroke: black; stroke-width: 2"/>
+    </g>
+  </g>
+</svg>
+</div>
+
+<style>
+  svg {
+    border: 2px solid green;
+  }
+  div#wrapper {
+    border: 2px solid blue;
+    width: 450px;
+    height: 900px;
+  }
+</style>
+

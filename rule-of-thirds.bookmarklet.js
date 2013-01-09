@@ -98,7 +98,6 @@ function createOverlays(overlayFactory) {
     if (!el.is(':visible') || w < 100 || h < 100) {
       return;
     }
-  console.log(src,w,h);
 
     window.overlay = jQuery('<div />')
       .addClass('rule-of-thirds')
@@ -143,6 +142,7 @@ function createOverlays(overlayFactory) {
   });
 }
 
+
 //from http://en.wikipedia.org/wiki/File:Fibonacci_spiral.svg
 // according to lightroom this is the vertical orientation.
 // for horizontal images, need to rotate 90 degrees CW
@@ -160,15 +160,10 @@ function getSVGOverlaySpiralTemplate() {
    sodipodi:version="0.32"\
    inkscape:version="0.44"\
    version="1.0"\
-   viewbox="0 0 987.6 611"\
+   viewbox="<%= viewbox %>"\
    preserveAspectRatio="none"\
    sodipodi:docname="Fibonacci_spiral.svg">\
 <defs>\
-<filter id="offsetAndBlack" x="0" y="0" width="200%" height="200%">\
-  <feOffset result="offOut" in="SourceGraphic" dx="2" dy="2" />\
-  <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />\
-  <feBlend in="SourceGraphic" in2="matrixOut" mode="normal" />\
-</filter>\
 <g id="spiral" >\
   <path id="path1873" sodipodi:type="arc"\
      vector-effect="non-scaling-stroke"\
@@ -228,34 +223,49 @@ function getSVGOverlaySpiralTemplate() {
   <path d="M 610.30252,610.49292 L 610.30252,0.50000006" id="rect2806" sodipodi:nodetypes="cc" vector-effect="non-scaling-stroke" />\
 </g>\
 </defs>\
-<g id="drawing" transform="<%= transform %>">\
+<% _.each(transform, function(t) { %>\
+  <g id="drawing" transform="<%= t %>">\
+<% }); %>\
 <use xlink:href="#rectangles" style="vector-effect:none; stroke: grey; stroke-width: 4;"/>\
 <use xlink:href="#rectangles" style="vector-effect:none; stroke: white; stroke-width: 2;"/>\
 <use xlink:href="#spiral" style="fill:none; stroke: grey; stroke-width: 4;" />\
 <use xlink:href="#spiral" style="fill:none; stroke: white; stroke-width: 2;" />\
+<% _.each(transform, function(t) { %>\
 </g>\
+<% }); %>\
 </svg>';
   return svg;
 }
 
 function getSVGOverlaySpiral(width, height, type) {
-  console.log("Spiraling", type);
 
   //corresponds to values hardcoded in SVG template
   var viewboxWidth = 987.6,
       viewboxHeight = 611,
-      halfViewboxWidth = viewboxWidth / 2,
-      halfViewboxHeight = viewboxHeight / 2;
-
-      // var transform = 'rotate(180 494 306)';
-      // var transform = 'scale(-1,-1) translate(' + viewboxWidth +',' + viewboxHeight +')';
-      // var transform = 'scale(-1,1) translate(' + (halfViewboxWidth + 1000) +',0)';
+      viewbox = [0, 0, viewboxWidth, viewboxHeight].join(','),
+      // rotation
+      needsRotation = (width < height),
+      viewboxCenterX = viewboxWidth / 2,
+      viewboxCenterY = viewboxHeight / 2,
+      rotationTransform = 'rotate(' + [90, viewboxCenterX, viewboxCenterY].join(",") + ')',
+      // after rotating around (W/2,H/2), recenter around (H/2,W/2)
+      translateX = viewboxCenterY - viewboxCenterX,
+      translateY = viewboxCenterX - viewboxCenterY;
+      translationTransform = 'translate(' + translateX + ',' + translateY + ')';
 
   // from http://tech.groups.yahoo.com/group/svg-developers/message/14903
-  var transform = '';
+  var transformations = [];
+
+  if (needsRotation) {
+      // Note: SVG transformation order is important and counter-intuitive
+      transformations.push(translationTransform, rotationTransform);
+      viewbox = [0, 0, viewboxHeight, viewboxWidth].join(',');
+  }
+
   switch (type) {
     case "SPIRAL_90":
       var transform = 'matrix(-1,0,0,1,' + viewboxWidth +',0)'; //horizontal flip
+      // var transform = 'rotate(90 494 306)';
       break;
     case "SPIRAL_180":
       var transform = 'matrix(-1,0,0,-1,' + viewboxWidth +',' + viewboxHeight + ')'; // vertical + horizontal flip
@@ -269,8 +279,13 @@ function getSVGOverlaySpiral(width, height, type) {
       var transform = '';
   }
 
+  if (transform) {
+    transformations.push(transform);
+  }
+
   var svg = _.template(getSVGOverlaySpiralTemplate(), {
-    transform: transform
+    transform: transformations,
+    viewbox: viewbox
   });
 
   // because firefox seems to need this; see /tests/svg-viewbox.html
@@ -288,7 +303,7 @@ function getSVGOverlayThirdsGridTemplate() {
   // including the <?xml tag causes errors, so we remove it
   // var svg = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\
   var svg = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="<%= viewBox %>" preserveAspectRatio="none">\
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewbox="<%= viewbox %>" preserveAspectRatio="none">\
 <% _.each(lines, function(line) { %>\
 <polyline points="<%= line %>" style="stroke: grey; stroke-width:4;" vector-effect="non-scaling-stroke" />\
 <polyline points="<%= line %>" style="stroke: white; stroke-width:2;" vector-effect="non-scaling-stroke" />\
@@ -359,12 +374,7 @@ function getSVGOverlayThirdsGrid(width, height, type) {
   }
 
   var svg = _.template(getSVGOverlayThirdsGridTemplate(), {
-    // viewBox: "0 0 300 300",
-    // h1: "0,100 300,100",
-    // h2: "0,200 300,200",
-    // v1: "100,0 100,300",
-    // v2: "200,0 200,300"
-    viewBox: [0,0,width,height].join(" "),
+    viewbox: [0,0,width,height].join(" "),
     lines: _.map(lines, function(v) { return v[0] + "," + v[1] + " " + v[2] + "," + v[3]; })
   });
 
@@ -460,5 +470,6 @@ function requireDeps() {
       }
     }
   ]);
+
 }
 

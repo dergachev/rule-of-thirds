@@ -1,0 +1,23 @@
+<h1> Spiral on Vertical Image </h1>
+
+<img src="//upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_natural_color.jpg/401px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_natural_color.jpg" width="401" height="599">
+
+<script type="text/javascript" src="/rule-of-thirds.bookmarklet.js"></script>
+<script type="text/javascript">
+  //overrides standard behavior
+function initMyBookmarklet() {
+  createOverlays(function(width,height,degrees) { 
+    return getSVGOverlaySpiral(width, height, "SPIRAL_270"); 
+  });
+}
+</script>
+
+<style>
+  svg {
+    border: 2px solid green;
+  }
+  div {
+    border: 2px solid blue;
+  }
+</style>
+
