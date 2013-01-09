@@ -37,6 +37,12 @@ RuleOfThirds.stateMachine = RuleOfThirds.stateMachine || new (function (){
         createOverlays(function(width, height) { return getSVGOverlayThirdsGrid(width, height, "TRIANGLES")} );
       }
     },
+    { name:'TRIANGLES_90',
+      onEnter: function() {
+        removeOverlays(); // unnecessary due to order of state advance()
+        createOverlays(function(width, height) { return getSVGOverlayThirdsGrid(width, height, "TRIANGLES_90")} );
+      }
+    },
     { name:'SPIRAL_0',
       onEnter: function() {
         removeOverlays();
@@ -307,7 +313,15 @@ function getSVGOverlayThirdsGrid(width, height, type) {
         d1: [0, 0, (h_sq * w)/(w_sq + h_sq), h * w_sq / (w_sq + h_sq)],
         d2: [w - (h_sq * w)/(w_sq + h_sq), h - h * w_sq / (w_sq + h_sq), w, h],
         d3: [0, h, w, 0],
-        // d4: [0,0,w,h]
+      };
+      break;
+    case "TRIANGLES_90":
+      var w = width, h = height, w_sq = Math.pow(w,2), h_sq = Math.pow(h,2);
+        // vertical axis mirror from TRIANGLES
+      var lines = {
+        d1: [w, 0, w - (h_sq * w)/(w_sq + h_sq), h * w_sq / (w_sq + h_sq)],
+        d2: [(h_sq * w)/(w_sq + h_sq), h - h * w_sq / (w_sq + h_sq), 0, h],
+        d3: [0,0,w,h]
       };
       break;
     case "GRID_PHI":
