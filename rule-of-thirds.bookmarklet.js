@@ -1,5 +1,10 @@
 function initMyBookmarklet() {
   (window.myBookmarklet = function() {
+
+    // blow away customizations to underscore template parsing (eg 500px)
+    _.templateSettings.interpolate = /<%=([\s\S]+?)%>/g
+    _.templateSettings.evaluate = /<%([\s\S]+?)%>/g
+
     // TODO: simplify state handling on multiple-clicks of bookmarklet
     RuleOfThirds.stateMachine.advance();
   })();
