@@ -1,0 +1,49 @@
+<h1> SVG viewbox </h1>
+
+<p>This demonstrates that an embedded SVG is sized differently in chrome and firefox. 
+It seems that firefox just ignores preserveAspectRatio.
+
+<p>The following CSS demonstrates a workaround: <pre>svg:hover { width:100%; height: 100%}</pre>
+
+<div id="wrapper">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+viewbox="0,0,600,300" 
+preserveAspectRatio="none"
+version="1.1">
+  <defs>
+    <g id="horizontal-lines">
+      <polyline vector-effect="non-scaling-stroke" points="0,100 600,100" />
+      <polyline vector-effect="non-scaling-stroke" points="0,200 600,200" />
+    </g>
+    <g id="vertical-lines">
+    <polyline vector-effect="non-scaling-stroke" points="200,0 200,300" />
+    <polyline vector-effect="non-scaling-stroke" points="400,0 400,300" />
+    </g>
+  </defs>
+  <use xlink:href="#horizontal-lines" style="stroke: red; stroke-width: 2"/>
+  <use xlink:href="#vertical-lines" style="stroke: black; stroke-width: 2"/>
+</svg>
+</div>
+
+<style>
+  svg {
+    border: 2px solid green;
+  }
+  svg:hover {
+    width: 100%;
+    height: 100%;
+  }
+  div#wrapper {
+    border: 2px solid blue;
+    width: 150px;
+    height: 300px;
+  }
+</style>
+
+<h2> Resources </h2>
+
+<li> http://webdesign.about.com/od/svg/a/svg-viewbox-attribute.htm
+<li> https://bugzilla.mozilla.org/show_bug.cgi?id=777265
+<li> http://jsfiddle.net/gonsfx/Rm2LE/ "Firefox PreserveAspectRatio BUG"
+<li> http://stackoverflow.com/questions/644896/how-do-i-scale-a-stubborn-svg-embedded-with-the-object-tag
+<li> http://stackoverflow.com/questions/10524978/html5-svg-preserveaspectratio-none-not-working-in-firefox

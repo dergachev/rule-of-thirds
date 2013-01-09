@@ -273,10 +273,11 @@ function getSVGOverlaySpiral(width, height, type) {
     transform: transform
   });
 
-  // svg = jQuery(svg).css({
-  //   width: width,
-  //   height: height
-  // });
+  // because firefox seems to need this; see /tests/svg-viewbox.html
+  svg = jQuery(svg).css({
+    width: '100%',
+    height: '100%'
+  });
   return svg;
 }
 
