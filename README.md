@@ -101,3 +101,9 @@ Photography:
 
 * http://pamphotography.wordpress.com/2011/08/06/the-golden-ratio-phi-and-photography/
 * http://photoinf.com/Golden_Mean/
+
+Github Pages:
+
+* http://stackoverflow.com/questions/4658606/import-existing-source-code-to-github
+* http://oli.jp/2011/github-pages-workflow/
+* https://help.github.com/articles/creating-project-pages-manually
